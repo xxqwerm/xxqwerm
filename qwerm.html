@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merged Cosmic Typography Art</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #0a0e1a;
+            font-family: 'Courier New', Courier, monospace;
+            color: #00ffcc;
+            overflow-x: hidden;
+        }
+        
+        /* Typing Animation Section */
+        .typing-section {
+            background-color: #111;
+            color: #00ffcc;
+            font-size: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative;
+        }
+        
+        .typing {
+            border-right: 2px solid #00ffcc;
+            white-space: nowrap;
+            overflow: hidden;
+            width: 0;
+            animation: typing 4s steps(45, end) forwards, blink 0.75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 42ch }
+        }
+        
+        @keyframes blink {
+            from, to { border-color: transparent }
+            50% { border-color: #00ffcc }
+        }
+        
+        /* Spacer Section */
+        .spacer {
+            height: 300px;
+            background: linear-gradient(180deg, #111 0%, #0a0e1a 100%);
+        }
+        
+        /* Cosmic Art Section */
+        .cosmic-section {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 50px 0;
+        }
+        
+        .canvas {
+            width: 500px;
+            height: 700px;
+            background: radial-gradient(ellipse at 50% 25%, #1a2540 0%, #152030 30%, #0f1829 60%, #050a15 100%);
+            position: relative;
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+            border-radius: 10px;
+            box-shadow: 
+                0 0 50px rgba(0, 150, 255, 0.3),
+                inset 0 0 100px rgba(0, 0, 50, 0.5);
+        }
+        
+        .pixel {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            opacity: 0;
+            transition: all 0.3s ease;
+            animation: pixelAppear 0.1s ease-out forwards;
+        }
+        
+        @keyframes pixelAppear {
+            from { 
+                opacity: 0; 
+                transform: scale(0.5) rotate(45deg); 
+            }
+            to { 
+                opacity: 1; 
+                transform: scale(1) rotate(0deg); 
+            }
+        }
+        
+        .pixel:hover {
+            transform: scale(1.3) !important;
+            filter: brightness(1.5) saturate(1.3);
+            z-index: 100;
+            border-radius: 2px;
+            box-shadow: 0 0 15px currentColor;
+        }
+        
+        .star {
+            width: 2px;
+            height: 2px;
+            background: #ffffff;
+            opacity: 0.6;
+            border-radius: 50%;
+            animation: twinkle 3s ease-in-out infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.5); }
+        }
+        
+        .glow-pixel {
+            animation: pixelGlow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes pixelGlow {
+            from { filter: brightness(1) saturate(1); }
+            to { filter: brightness(1.4) saturate(1.6); }
+        }
+        
+        .pulse-pixel {
+            animation: pixelPulse 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes pixelPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+        
+        .flame-pixel {
+            animation: flameFlicker 0.8s ease-in-out infinite alternate;
+        }
+        
+        @keyframes flameFlicker {
+            from { filter: brightness(1) hue-rotate(0deg); }
+            to { filter: brightness(1.3) hue-rotate(10deg); }
+        }
+        
+        .drip-pixel {
+            animation: dripFall 0.3s ease-out forwards;
+        }
+        
+        @keyframes dripFall {
+            from { 
+                transform: translateY(-5px) scale(0.8); 
+                opacity: 0; 
+            }
+            to { 
+                transform: translateY(0) scale(1); 
+                opacity: 1; 
+            }
+        }
+        
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(100, 200, 255, 0.6);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: floatUp 4s linear infinite;
+        }
+        
+        @keyframes floatUp {
+            from { 
+                transform: translateY(0) scale(1); 
+                opacity: 1; 
+            }
+            to { 
+                transform: translateY(-100px) scale(0); 
+                opacity: 0; 
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Typing Animation Section -->
+    <div class="typing-section">
+        <div class="typing">...qwerm,,typing,,alphabet,,by,,alphabet...</div>
+    </div>
+    
+    <!-- Spacer Section -->
+    <div class="spacer"></div>
+    
+    <!-- Cosmic Art Section -->
+    <div class="cosmic-section">
+        <div class="canvas" id="canvas"></div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        
+        // Precise pixel mapping matching the reference image
+        const pixels = [
+            // TOP FLAME SECTION - Yellow/Orange flame tip
+            // Row 1 - Single flame tip
+            [31, 3, '#ffff99'],
+            
+            // Row 2 - Flame widens
+            [30, 4, '#ffee66'], [31, 4, '#ffff99'], [32, 4, '#ffee66'],
+            
+            // Row 3 - Flame spreads more
+            [29, 5, '#ffcc44'], [30, 5, '#ffdd55'], [31, 5, '#ffee88'], [32, 5, '#ffdd55'], [33, 5, '#ffcc44'],
+            
+            // Row 4 - Orange transition begins
+            [28, 6, '#ffbb33'], [29, 6, '#ffaa22'], [30, 6, '#ff9911'], [31, 6, '#ff8800'], [32, 6, '#ff9911'], [33, 6, '#ffaa22'], [34, 6, '#ffbb33'],
+            
+            // Row 5 - More orange, getting redder
+            [27, 7, '#ff9922'], [28, 7, '#ff7711'], [29, 7, '#ee6600'], [30, 7, '#dd5500'], [31, 7, '#cc4400'], [32, 7, '#dd5500'], [33, 7, '#ee6600'], [34, 7, '#ff7711'], [35, 7, '#ff9922'],
+            
+            // Row 6 - Deep orange to red transition
+            [26, 8, '#ff8811'], [27, 8, '#ee6600'], [28, 8, '#dd4400'], [29, 8, '#cc3300'], [30, 8, '#bb2200'], [31, 8, '#aa1100'], [32, 8, '#bb2200'], [33, 8, '#cc3300'], [34, 8, '#dd4400'], [35, 8, '#ee6600'], [36, 8, '#ff8811'],
+            
+            // Row 7 - Red to dark red transition
+            [25, 9, '#ee7700'], [26, 9, '#dd5500'], [27, 9, '#cc3300'], [28, 9, '#bb2200'], [29, 9, '#aa1100'], [30, 9, '#990000'], [31, 9, '#880000'], [32, 9, '#990000'], [33, 9, '#aa1100'], [34, 9, '#bb2200'], [35, 9, '#cc3300'], [36, 9, '#dd5500'], [37, 9, '#ee7700'],
+            
+            // Row 8 - Dark red to purple transition
+            [24, 10, '#dd6600'], [25, 10, '#cc4400'], [26, 10, '#bb2200'], [27, 10, '#aa0000'], [28, 10, '#990011'], [29, 10, '#880022'], [30, 10, '#770033'], [31, 10, '#660044'], [32, 10, '#770033'], [33, 10, '#880022'], [34, 10, '#990011'], [35, 10, '#aa0000'], [36, 10, '#bb2200'], [37, 10, '#cc4400'], [38, 10, '#dd6600'],
+            
+            // Row 9 - Purple transition begins
+            [23, 11, '#cc5500'], [24, 11, '#bb3300'], [25, 11, '#aa1100'], [26, 11, '#990022'], [27, 11, '#880033'], [28, 11, '#770044'], [29, 11, '#660055'], [30, 11, '#550066'], [31, 11, '#440077'], [32, 11, '#550066'], [33, 11, '#660055'], [34, 11, '#770044'], [35, 11, '#880033'], [36, 11, '#990022'], [37, 11, '#aa1100'], [38, 11, '#bb3300'], [39, 11, '#cc5500'],
+            
+            // Row 10 - More purple, blue starting
+            [22, 12, '#bb4400'], [23, 12, '#aa2200'], [24, 12, '#990033'], [25, 12, '#880044'], [26, 12, '#770055'], [27, 12, '#660066'], [28, 12, '#550077'], [29, 12, '#440088'], [30, 12, '#330099'], [31, 12, '#2200aa'], [32, 12, '#330099'], [33, 12, '#440088'], [34, 12, '#550077'], [35, 12, '#660066'], [36, 12, '#770055'], [37, 12, '#880044'], [38, 12, '#990033'], [39, 12, '#aa2200'], [40, 12, '#bb4400'],
+            
+            // Row 11 - Blue appears in center
+            [21, 13, '#aa3300'], [22, 13, '#991122'], [23, 13, '#880033'], [24, 13, '#770044'], [25, 13, '#660055'], [26, 13, '#550077'], [27, 13, '#440088'], [28, 13, '#330099'], [29, 13, '#2200bb'], [30, 13, '#1100cc'], [31, 13, '#0000dd'], [32, 13, '#1100cc'], [33, 13, '#2200bb'], [34, 13, '#330099'], [35, 13, '#440088'], [36, 13, '#550077'], [37, 13, '#660055'], [38, 13, '#770044'], [39, 13, '#880033'], [40, 13, '#991122'], [41, 13, '#aa3300'],
+            
+            // Row 12 - Brighter blue center
+            [20, 14, '#992200'], [21, 14, '#881133'], [22, 14, '#770044'], [23, 14, '#660055'], [24, 14, '#550077'], [25, 14, '#440088'], [26, 14, '#330099'], [27, 14, '#2200bb'], [28, 14, '#1100cc'], [29, 14, '#0000ee'], [30, 14, '#0022ff'], [31, 14, '#0044ff'], [32, 14, '#0022ff'], [33, 14, '#0000ee'], [34, 14, '#1100cc'], [35, 14, '#2200bb'], [36, 14, '#330099'], [37, 14, '#440088'], [38, 14, '#550077'], [39, 14, '#660055'], [40, 14, '#770044'], [41, 14, '#881133'], [42, 14, '#992200'],
+            
+            // Row 13 - Cyan core begins
+            [19, 15, '#881100'], [20, 15, '#771144'], [21, 15, '#660055'], [22, 15, '#550077'], [23, 15, '#440088'], [24, 15, '#330099'], [25, 15, '#2200bb'], [26, 15, '#1100dd'], [27, 15, '#0000ff'], [28, 15, '#0033ff'], [29, 15, '#0066ff'], [30, 15, '#0099ff'], [31, 15, '#00ccff'], [32, 15, '#0099ff'], [33, 15, '#0066ff'], [34, 15, '#0033ff'], [35, 15, '#0000ff'], [36, 15, '#1100dd'], [37, 15, '#2200bb'], [38, 15, '#330099'], [39, 15, '#440088'], [40, 15, '#550077'], [41, 15, '#660055'], [42, 15, '#771144'], [43, 15, '#881100'],
+            
+            // Row 14 - Bright cyan core
+            [18, 16, '#770000'], [19, 16, '#661155'], [20, 16, '#550066'], [21, 16, '#440088'], [22, 16, '#330099'], [23, 16, '#2200bb'], [24, 16, '#1100dd'], [25, 16, '#0022ff'], [26, 16, '#0055ff'], [27, 16, '#0088ff'], [28, 16, '#00bbff'], [29, 16, '#00eeff'], [30, 16, '#33ffff'], [31, 16, '#66ffff'], [32, 16, '#33ffff'], [33, 16, '#00eeff'], [34, 16, '#00bbff'], [35, 16, '#0088ff'], [36, 16, '#0055ff'], [37, 16, '#0022ff'], [38, 16, '#1100dd'], [39, 16, '#2200bb'], [40, 16, '#330099'], [41, 16, '#440088'], [42, 16, '#550066'], [43, 16, '#661155'], [44, 16, '#770000'],
+            
+            // Row 15 - Peak brightness with white core
+            [17, 17, '#660000'], [18, 17, '#551166'], [19, 17, '#440077'], [20, 17, '#330099'], [21, 17, '#2200bb'], [22, 17, '#1100dd'], [23, 17, '#0033ff'], [24, 17, '#0066ff'], [25, 17, '#0099ff'], [26, 17, '#00ccff'], [27, 17, '#00ffff'], [28, 17, '#66ffff'], [29, 17, '#99ffff'], [30, 17, '#ccffff'], [31, 17, '#ffffff'], [32, 17, '#ccffff'], [33, 17, '#99ffff'], [34, 17, '#66ffff'], [35, 17, '#00ffff'], [36, 17, '#00ccff'], [37, 17, '#0099ff'], [38, 17, '#0066ff'], [39, 17, '#0033ff'], [40, 17, '#1100dd'], [41, 17, '#2200bb'], [42, 17, '#330099'], [43, 17, '#440077'], [44, 17, '#551166'], [45, 17, '#660000'],
+            
+            // Row 16 - White core continues, purple sides more defined
+            [16, 18, '#550000'], [17, 18, '#441177'], [18, 18, '#330088'], [19, 18, '#2200bb'], [20, 18, '#1100dd'], [21, 18, '#0044ff'], [22, 18, '#0077ff'], [23, 18, '#00aaff'], [24, 18, '#00ddff'], [25, 18, '#33ffff'], [26, 18, '#66ffff'], [27, 18, '#99ffff'], [28, 18, '#ccffff'], [29, 18, '#ffffff'], [30, 18, '#ffffff'], [31, 18, '#ffffff'], [32, 18, '#ffffff'], [33, 18, '#ccffff'], [34, 18, '#99ffff'], [35, 18, '#66ffff'], [36, 18, '#33ffff'], [37, 18, '#00ddff'], [38, 18, '#00aaff'], [39, 18, '#0077ff'], [40, 18, '#0044ff'], [41, 18, '#1100dd'], [42, 18, '#2200bb'], [43, 18, '#330088'], [44, 18, '#441177'], [45, 18, '#550000'],
+            
+            // LEFT AND RIGHT PURPLE SECTIONS - More detailed mapping
+            // Left side purple wing
+            [12, 19, '#773366'], [13, 19, '#663366'], [14, 19, '#553366'], [15, 19, '#443366'],
+            [10, 20, '#883366'], [11, 20, '#773366'], [12, 20, '#663366'], [13, 20, '#553366'], [14, 20, '#443366'], [15, 20, '#333366'],
+            [8, 21, '#993366'], [9, 21, '#883366'], [10, 21, '#773366'], [11, 21, '#663366'], [12, 21, '#553366'], [13, 21, '#443366'], [14, 21, '#333366'],
+            [6, 22, '#aa3366'], [7, 22, '#993366'], [8, 22, '#883366'], [9, 22, '#773366'], [10, 22, '#663366'], [11, 22, '#553366'], [12, 22, '#443366'],
+            [4, 23, '#bb3366'], [5, 23, '#aa3366'], [6, 23, '#993366'], [7, 23, '#883366'], [8, 23, '#773366'], [9, 23, '#663366'], [10, 23, '#553366'],
+            [2, 24, '#cc3366'], [3, 24, '#bb3366'], [4, 24, '#aa3366'], [5, 24, '#993366'], [6, 24, '#883366'], [7, 24, '#773366'], [8, 24, '#663366'],
+            [0, 25, '#dd3366'], [1, 25, '#cc3366'], [2, 25, '#bb3366'], [3, 25, '#aa3366'], [4, 25, '#993366'], [5, 25, '#883366'], [6, 25, '#773366'],
+            
+            // Right side purple wing (mirrored)
+            [47, 19, '#443366'], [48, 19, '#553366'], [49, 19, '#663366'], [50, 19, '#773366'],
+            [47, 20, '#333366'], [48, 20, '#443366'], [49, 20, '#553366'], [50, 20, '#663366'], [51, 20, '#773366'], [52, 20, '#883366'],
+            [47, 21, '#333366'], [48, 21, '#443366'], [49, 21, '#553366'], [50, 21, '#663366'], [51, 21, '#773366'], [52, 21, '#883366'], [53, 21, '#993366'],
+            [49, 22, '#443366'], [50, 22, '#553366'], [51, 22, '#663366'], [52, 22, '#773366'], [53, 22, '#883366'], [54, 22, '#993366'], [55, 22, '#aa3366'],
+            [51, 23, '#553366'], [52, 23, '#663366'], [53, 23, '#773366'], [54, 23, '#883366'], [55, 23, '#993366'], [56, 23, '#aa3366'], [57, 23, '#bb3366'],
+            [53, 24, '#663366'], [54, 24, '#773366'], [55, 24, '#883366'], [56, 24, '#993366'], [57, 24, '#aa3366'], [58, 24, '#bb3366'], [59, 24, '#cc3366'],
+            [55, 25, '#773366'], [56, 25, '#883366'], [57, 25, '#993366'], [58, 25, '#aa3366'], [59, 25, '#bb3366'], [60, 25, '#cc3366'], [61, 25, '#dd3366'],
+            
+            // CENTRAL BRIGHT CORE - More precise white and cyan center
+            [16, 19, '#0055ff'], [17, 19, '#0088ff'], [18, 19, '#00bbff'], [19, 19, '#00eeff'], [20, 19, '#33ffff'], [21, 19, '#66ffff'], [22, 19, '#99ffff'], [23, 19, '#ccffff'], [24, 19, '#ffffff'], [25, 19, '#ffffff'], [26, 19, '#ffffff'], [27, 19, '#ffffff'], [28, 19, '#ffffff'], [29, 19, '#ffffff'], [30, 19, '#ffffff'], [31, 19, '#ffffff'], [32, 19, '#ffffff'], [33, 19, '#ffffff'], [34, 19, '#ffffff'], [35, 19, '#ffffff'], [36, 19, '#ffffff'], [37, 19, '#ffffff'], [38, 19, '#ccffff'], [39, 19, '#99ffff'], [40, 19, '#66ffff'], [41, 19, '#33ffff'], [42, 19, '#00eeff'], [43, 19, '#00bbff'], [44, 19, '#0088ff'], [45, 19, '#0055ff'],
+            
+            [16, 20, '#0077ff'], [17, 20, '#00aaff'], [18, 20, '#00ddff'], [19, 20, '#33ffff'], [20, 20, '#66ffff'], [21, 20, '#99ffff'], [22, 20, '#ccffff'], [23, 20, '#ffffff'], [24, 20, '#ffffff'], [25, 20, '#ffffff'], [26, 20, '#ffffff'], [27, 20, '#ffffff'], [28, 20, '#ffffff'], [29, 20, '#ffffff'], [30, 20, '#ffffff'], [31, 20, '#ffffff'], [32, 20, '#ffffff'], [33, 20, '#ffffff'], [34, 20, '#ffffff'], [35, 20, '#ffffff'], [36, 20, '#ffffff'], [37, 20, '#ffffff'], [38, 20, '#ffffff'], [39, 20, '#ccffff'], [40, 20, '#99ffff'], [41, 20, '#66ffff'], [42, 20, '#33ffff'], [43, 20, '#00ddff'], [44, 20, '#00aaff'], [45, 20, '#0077ff'],
+            
+            // BOTTOM TRANSITION - Gradual fade from bright center
+            [18, 21, '#00aaff'], [19, 21, '#00ddff'], [20, 21, '#33ffff'], [21, 21, '#66ffff'], [22, 21, '#99ffff'], [23, 21, '#ccffff'], [24, 21, '#ffffff'], [25, 21, '#ffffff'], [26, 21, '#ffffff'], [27, 21, '#ffffff'], [28, 21, '#ffffff'], [29, 21, '#ffffff'], [30, 21, '#ffffff'], [31, 21, '#ffffff'], [32, 21, '#ffffff'], [33, 21, '#ffffff'], [34, 21, '#ffffff'], [35, 21, '#ffffff'], [36, 21, '#ffffff'], [37, 21, '#ffffff'], [38, 21, '#ccffff'], [39, 21, '#99ffff'], [40, 21, '#66ffff'], [41, 21, '#33ffff'], [42, 21, '#00ddff'], [43, 21, '#00aaff'],
+            
+            [20, 22, '#00ccff'], [21, 22, '#33ffff'], [22, 22, '#66ffff'], [23, 22, '#99ffff'], [24, 22, '#ccffff'], [25, 22, '#ffffff'], [26, 22, '#ffffff'], [27, 22, '#ffffff'], [28, 22, '#ffffff'], [29, 22, '#ffffff'], [30, 22, '#ffffff'], [31, 22, '#ffffff'], [32, 22, '#ffffff'], [33, 22, '#ffffff'], [34, 22, '#ffffff'], [35, 22, '#ffffff'], [36, 22, '#ffffff'], [37, 22, '#ccffff'], [38, 22, '#99ffff'], [39, 22, '#66ffff'], [40, 22, '#33ffff'], [41, 22, '#00ccff'],
+            
+            [22, 23, '#00eeff'], [23, 23, '#33ffff'], [24, 23, '#66ffff'], [25, 23, '#99ffff'], [26, 23, '#ccffff'], [27, 23, '#ffffff'], [28, 23, '#ffffff'], [29, 23, '#ffffff'], [30, 23, '#ffffff'], [31, 23, '#ffffff'], [32, 23, '#ffffff'], [33, 23, '#ffffff'], [34, 23, '#ffffff'], [35, 23, '#ccffff'], [36, 23, '#99ffff'], [37, 23, '#66ffff'], [38, 23, '#33ffff'], [39, 23, '#00eeff'],
+            
+            [24, 24, '#33ffff'], [25, 24, '#66ffff'], [26, 24, '#99ffff'], [27, 24, '#ccffff'], [28, 24, '#ffffff'], [29, 24, '#ffffff'], [30, 24, '#ffffff'], [31, 24, '#ffffff'], [32, 24, '#ffffff'], [33, 24, '#ffffff'], [34, 24, '#ccffff'], [35, 24, '#99ffff'], [36, 24, '#66ffff'], [37, 24, '#33ffff'],
+            
+            // DRIPPING SECTION - Major vertical streams matching reference image
+            // Left major drip stream
+            [15, 26, '#66eeff'], [14, 28, '#33ddff'], [15, 30, '#00ccff'], [14, 32, '#00aaee'], [15, 34, '#0088cc'], [14, 36, '#0066aa'], [15, 38, '#004488'], [14, 40, '#003366'], [15, 42, '#002244'], [14, 44, '#001122'], [15, 46, '#000011'], [14, 48, '#000000'],
+            
+            // Left-center drip stream
+            [22, 26, '#99ffff'], [23, 28, '#66eeff'], [22, 30, '#33ddff'], [23, 32, '#00ccff'], [22, 34, '#00aaee'], [23, 36, '#0088cc'], [22, 38, '#0066aa'], [23, 40, '#004488'], [22, 42, '#003366'], [23, 44, '#002244'], [22, 46, '#001122'], [23, 48, '#000011'], [22, 50, '#000000'],
+            
+            // Center main drip - thickest stream
+            [29, 26, '#ccffff'], [30, 27, '#ffffff'], [31, 28, '#ccffff'], [30, 29, '#99ffff'], [31, 30, '#66eeff'], [30, 31, '#33ddff'], [31, 32, '#00ccff'], [30, 33, '#00aaee'], [31, 34, '#0088cc'], [30, 35, '#0066aa'], [31, 36, '#004488'], [30, 37, '#003366'], [31, 38, '#002244'], [30, 39, '#001122'], [31, 40, '#000011'], [30, 41, '#000000'], [31, 42, '#000000'], [30, 43, '#000000'], [31, 44, '#000000'], [30, 45, '#000000'], [31, 46, '#000000'],
+            
+            // Right-center drip stream
+            [38, 26, '#99ffff'], [39, 28, '#66eeff'], [38, 30, '#33ddff'], [39, 32, '#00ccff'], [38, 34, '#00aaee'], [39, 36, '#0088cc'], [38, 38, '#0066aa'], [39, 40, '#004488'], [38, 42, '#003366'], [39, 44, '#002244'], [38, 46, '#001122'], [39, 48, '#000011'], [38, 50, '#000000'],
+            
+            // Right major drip stream
+            [46, 26, '#66eeff'], [47, 28, '#33ddff'], [46, 30, '#00ccff'], [47, 32, '#00aaee'], [46, 34, '#0088cc'], [47, 36, '#0066aa'], [46, 38, '#004488'], [47, 40, '#003366'], [46, 42, '#002244'], [47, 44, '#001122'], [46, 46, '#000011'], [47, 48, '#000000'],
+            
+            // Additional smaller drip details - scattered drops
+            [10, 35, '#0066aa'], [12, 38, '#004488'], [8, 42, '#002244'], [6, 45, '#001122'], [4, 48, '#000011'], [2, 52, '#000000'],
+            [18, 38, '#004488'], [16, 42, '#002244'], [20, 45, '#001122'], [18, 48, '#000011'], [16, 52, '#000000'],
+            [26, 40, '#003366'], [28, 43, '#002244'], [24, 47, '#001122'], [26, 50, '#000011'], [28, 54, '#000000'],
+            [34, 40, '#003366'], [36, 43, '#002244'], [38, 47, '#001122'], [34, 50, '#000011'], [36, 54, '#000000'],
+            [42, 38, '#004488'], [44, 42, '#002244'], [40, 45, '#001122'], [42, 48, '#000011'], [44, 52, '#000000'],
+            [50, 35, '#0066aa'], [52, 38, '#004488'], [54, 42, '#002244'], [56, 45, '#001122'], [58, 48, '#000011'], [60, 52, '#000000'],
+            
+            // Even smaller scattered drips extending further down
+            [11, 55, '#000000'], [19, 58, '#000000'], [27, 60, '#000000'], [35, 58, '#000000'], [43, 55, '#000000'],
+            [7, 62, '#000000'], [15, 65, '#000000'], [31, 67, '#000000'], [47, 65, '#000000'], [55, 62, '#000000'],
+            [3, 68, '#000000'], [23, 70, '#000000'], [39, 70, '#000000'], [59, 68, '#000000'],
+            
+            // Final bottom scattered pixels
+            [9, 72, '#000000'], [17, 75, '#000000'], [25, 78, '#000000'], [33, 80, '#000000'], [41, 78, '#000000'], [49, 75, '#000000'], [57, 72, '#000000'],
+        ];
+        
+        // Enhanced stars with varied sizes and twinkle patterns - more cosmic feel
+        const stars = [
+            // Small distant stars
+            [45, 60, 1], [395, 35, 1], [85, 180, 1], [365, 165, 1], [65, 385, 1], [325, 335, 1], [135, 485, 1], [275, 465, 1],
+            [15, 285, 1], [375, 265, 1], [105, 135, 1], [285, 105, 1], [185, 535, 1], [305, 235, 1], [45, 435, 1], [345, 385, 1],
+            [25, 155, 1], [455, 215, 1], [75, 95, 1], [425, 125, 1], [155, 305, 1], [195, 85, 1], [355, 405, 1], [115, 465, 1],
+            // Medium bright stars
+            [165, 65, 2], [255, 335, 2], [75, 235, 2], [335, 135, 2], [145, 435, 2], [295, 505, 2], [55, 165, 2], [355, 305, 2],
+            [225, 195, 2], [385, 275, 2], [125, 355, 2], [265, 145, 2], [405, 185, 2], [35, 325, 2], [175, 515, 2], [315, 95, 2],
+            // Large prominent stars
+            [115, 515, 3], [315, 75, 3], [155, 225, 3], [265, 465, 3], [25, 355, 3], [385, 195, 3], [205, 135, 3], [345, 425, 3],
+            // Extra scattered small stars for density
+            [460, 110, 1], [40, 150, 1], [390, 310, 1], [110, 410, 1], [290, 170, 1], [210, 370, 1], [430, 470, 1], [70, 510, 1],
+            [480, 260, 1], [20, 200, 1], [470, 340, 1], [10, 380, 1], [450, 520, 1], [90, 50, 1], [410, 80, 1], [170, 580, 1],
+            [240, 30, 1], [360, 550, 1], [140, 90, 1], [280, 580, 1], [320, 40, 1], [180, 520, 1], [420, 300, 1], [60, 260, 1],
+        ];
+        
+        // Add background stars first
+        stars.forEach(([x, y, size]) => {
+            const star = document.createElement('div');
+            star.className = 'pixel star';
+            star.style.left = x + 'px';
+            star.style.top = y + 'px';
+            star.style.width = (size * 2) + 'px';
+            star.style.height = (size * 2) + 'px';
+            star.style.animationDelay = (Math.random() * 3) + 's';
+            canvas.appendChild(star);
+        });
+        
+        // Add main pixels with enhanced animations
+        pixels.forEach(([x, y, color], index) => {
+            const pixel = document.createElement('div');
+            pixel.className = 'pixel';
+            pixel.style.backgroundColor = color;
+            pixel.style.left = (x * 8) + 'px';
+            pixel.style.top = (y * 8) + 'px';
+            pixel.style.animationDelay = (index * 0.005) + 's';
+            
+            // Add special animations based on color and position - more precise targeting
+            const brightness = parseInt(color.slice(1, 3), 16) + parseInt(color.slice(3, 5), 16) + parseInt(color.slice(5, 7), 16);
+            const isVeryBright = brightness > 600;
+            const isCyan = color.includes('ff') && !color.includes('00');
+            const isWhite = color === '#ffffff';
+            const isFlame = y < 12 && (color.includes('ff') && (color.includes('ee') || color.includes('dd') || color.includes('cc')));
+            const isDrip = y > 25 && (color.includes('00') || brightness < 200);
+            
+            if (isWhite || isVeryBright) {
+                pixel.classList.add('glow-pixel');
+            }
+            if (isFlame) {
+                pixel.classList.add('flame-pixel');
+            }
+            if (isCyan && !isWhite) {
+                pixel.classList.add('pulse-pixel');
+            }
+            if (isDrip) {
+                pixel.classList.add('drip-pixel');
+                pixel.style.animationDelay = (2 + y * 0.08) + 's';
+            }
+            
+            canvas.appendChild(pixel);
+        });
+        
+        // Interactive particle system
+        let particles = [];
+        
+        function createParticle(x, y) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = x + 'px';
+            particle.style.top = y + 'px';
+            particle.style.animationDelay = Math.random() * 2 + 's';
+            canvas.appendChild(particle);
+            particles.push(particle);
+            
+            setTimeout(() => {
+                particle.remove();
+                particles = particles.filter(p => p !== particle);
+            }, 4000);
+        }
+        
+        // Mouse interaction effects
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+            
+            // Create particles near mouse
+            if (Math.random() > 0.95) {
+                createParticle(
+                    mouseX + (Math.random() - 0.5) * 20,
+                    mouseY + (Math.random() - 0.5) * 20
+                );
+            }
+            
+            // Enhanced ripple effect
+            const allPixels = document.querySelectorAll('.pixel:not(.star)');
+            allPixels.forEach(pixel => {
+                const pixelRect = pixel.getBoundingClientRect();
+                const pixelX = pixelRect.left + pixelRect.width / 2 - rect.left;
+                const pixelY = pixelRect.top + pixelRect.height / 2 - rect.top;
+                
+                const distance = Math.sqrt((mouseX - pixelX) ** 2 + (mouseY - pixelY) ** 2);
+                
+                if (distance < 50) {
+                    const intensity = (50 - distance) / 50;
+                    pixel.style.transform = `scale(${1 + intensity * 0.3})`;
+                    pixel.style.filter = `brightness(${1 + intensity * 0.5}) saturate(${1 + intensity * 0.5})`;
+                    pixel.style.zIndex = Math.floor(intensity * 10);
+                } else {
+                    pixel.style.transform = 'scale(1)';
+                    pixel.style.filter = 'brightness(1) saturate(1)';
+                    pixel.style.zIndex = '1';
+                }
+            });
+        });
+        
+        // Click explosion effect
+        canvas.addEventListener('click', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const clickY = e.clientY - rect.top;
+            
+            // Create burst of particles
+            for (let i = 0; i < 8; i++) {
+                setTimeout(() => {
+                    createParticle(
+                        clickX + Math.cos(i * Math.PI / 4) * 20,
+                        clickY + Math.sin(i * Math.PI / 4) * 20
+                    );
+                }, i * 50);
+            }
+            
+            // Temporary bright flash
+            const flash = document.createElement('div');
+            flash.style.position = 'absolute';
+            flash.style.left = (clickX - 25) + 'px';
+            flash.style.top = (clickY - 25) + 'px';
+            flash.style.width = '50px';
+            flash.style.height = '50px';
+            flash.style.borderRadius = '50%';
+            flash.style.background = 'radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(100,200,255,0.4) 50%, transparent 100%)';
+            flash.style.pointerEvents = 'none';
+            flash.style.animation = 'flash 0.5s ease-out forwards';
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes flash {
+                    0% { transform: scale(0); opacity: 1; }
+                    100% { transform: scale(2); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            canvas.appendChild(flash);
+            setTimeout(() => {
+                flash.remove();
+                style.remove();
+            }, 500);
+        });
+        
+        // Auto-generate ambient particles
+        setInterval(() => {
+            const centerX = 250;
+            const centerY = 200;
+            const radius = Math.random() * 150 + 50;
+            const angle = Math.random() * Math.PI * 2;
+            
+            createParticle(
+                centerX + Math.cos(angle) * radius,
+                centerY + Math.sin(angle) * radius
+            );
+        }, 2000);
+        
+        // Dynamic color shifting for flame pixels
+        setInterval(() => {
+            const flamePixels = document.querySelectorAll('.flame-pixel');
+            flamePixels.forEach(pixel => {
+                if (Math.random() > 0.8) {
+                    pixel.style.filter = 'brightness(1.5) hue-rotate(15deg)';
+                    setTimeout(() => {
+                        pixel.style.filter = 'brightness(1) hue-rotate(0deg)';
+                    }, 150);
+                }
+            });
+        }, 300);
+        
+        // Periodic glow enhancement for core pixels
+        setInterval(() => {
+            const corePixels = document.querySelectorAll('.glow-pixel');
+            corePixels.forEach(pixel => {
+                if (Math.random() > 0.95) {
+                    pixel.style.boxShadow = '0 0 15px currentColor';
+                    setTimeout(() => {
+                        pixel.style.boxShadow = 'none';
+                    }, 500);
+                }
+            });
+        }, 100);
+        
+        // Drip animation trigger
+        setInterval(() => {
+            const dripPixels = document.querySelectorAll('.drip-pixel');
+            dripPixels.forEach(pixel => {
+                if (Math.random() > 0.98) {
+                    pixel.style.transform = 'translateY(-3px) scale(1.1)';
+                    setTimeout(() => {
+                        pixel.style.transform = 'translateY(0) scale(1)';
+                    }, 200);
+                }
+            });
+        }, 500);
+        
+        // Breathing effect for the entire structure
+        let breathePhase = 0;
+        setInterval(() => {
+            breathePhase += 0.1;
+            const breatheIntensity = Math.sin(breathePhase) * 0.02 + 1;
+            canvas.style.transform = `scale(${breatheIntensity})`;
+        }, 50);
+        
+        // Keyboard interactions
+        document.addEventListener('keydown', (e) => {
+            switch(e.key) {
+                case ' ': // Spacebar - energy burst
+                    const allPixels = document.querySelectorAll('.pixel:not(.star)');
+                    allPixels.forEach((pixel, index) => {
+                        setTimeout(() => {
+                            pixel.style.filter = 'brightness(2) saturate(2)';
+                            setTimeout(() => {
+                                pixel.style.filter = 'brightness(1) saturate(1)';
+                            }, 200);
+                        }, index * 2);
+                    });
+                    break;
+                    
+                case 'r': // R key - reset animations
+                    location.reload();
+                    break;
+                    
+                case 'f': // F key - flame intensity boost
+                    const flames = document.querySelectorAll('.flame-pixel');
+                    flames.forEach(flame => {
+                        flame.style.filter = 'brightness(2) hue-rotate(20deg) saturate(1.5)';
+                        setTimeout(() => {
+                            flame.style.filter = 'brightness(1) hue-rotate(0deg) saturate(1)';
+                        }, 1000);
+                    });
+                    break;
+            }
+        });
+    </script>
+</body>
+</html>
